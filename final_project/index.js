@@ -8,7 +8,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUninitialized: true}))
+app.use("/customer",session({secret:"secretKey",resave: true, saveUninitialized: true}))
 
 app.use("/customer/auth/*", function auth(req,res,next){
     const authHeader = req.headers.authorization;
@@ -20,7 +20,7 @@ app.use("/customer/auth/*", function auth(req,res,next){
     const token = authHeader.split(' ')[1]; 
 
     //Verificamos la integridad del token
-    jwt.verify(token, jwtSecret, (err, decoded) => {
+    jwt.verify(token, "secretKey", (err, decoded) => {
         if (err) {
             return res.status(401).json({ message: "Token incorrecto" });
         }
